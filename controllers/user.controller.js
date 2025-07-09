@@ -100,16 +100,36 @@ export const login = async (req , res) => {
     }
 }
 
-export const logout = async (req , res) => {
-    try {
-        return res.status(200).cookie("token","", {maxAge:0}).json({
-            message:"logged out successfully.",
-            success:true
-        });
-    } catch (error) {
-       console.log(error); 
-    }
-}
+// export const logout = async (req , res) => {
+//     try {
+//         return res.status(200).cookie("token","", {maxAge:0}).json({
+//             message:"logged out successfully.",
+//             success:true
+//         });
+//     } catch (error) {
+//        console.log(error); 
+//     }
+// }
+
+export const logout = async (req, res) => {
+  try {
+    return res
+      .status(200)
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None"
+      })
+      .json({
+        message: "Logged out successfully.",
+        success: true
+      });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: "Logout failed." });
+  }
+};
+
 
 export const updateProfile = async (req , res) => {
     try {
